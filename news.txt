@@ -1,0 +1,58 @@
+################### Таблица msgs ######################
+CREATE TABLE msgs(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	title TEXT,
+	category INTEGER,
+	description TEXT,
+	source TEXT,
+	datetime INTEGER
+)
+#######################################################
+################### Таблица category ######################
+CREATE TABLE category(
+	id INTEGER,
+	name TEXT
+)
+#######################################################
+################### Заполнение таблицы category ######################
+INSERT INTO category(id, name)
+SELECT 1 as id, 'Политика' as name
+UNION SELECT 2 as id, 'Культура' as name
+UNION SELECT 3 as id, 'Спорт' as name 
+######################################################################
+
+
+//////////////////////Выполнение запроса
+
+// Экранирование строк
+$name = $db->escapeString($name);
+
+// Для запросов без выборки данных
+$sql = "INSERT INTO users (name, age) VALUES ('$name', 25)";
+
+// Возвращает значение булева типа
+$result = $db->exec($sql);
+
+// Количество изменённых записей
+echo $db->changes();
+
+// Отслеживание ошибок
+echo $db->lastErrorCode();
+echo $db->lastErrorMsg();
+
+
+//////////////////////////Подготовленные запросы
+$sql = "INSERT INTO users (name, age) VALUES (:name, :age)";
+
+// Готовим запрос
+$stmt = $db->prepare($sql);
+
+// Привязываем параметры
+$stmt->bindParam(':name', $name);
+$stmt->bindParam(':age', $age);
+
+// Исполняем запрос
+$result = $stmt->execute();
+
+// Закрываем при необходимости
+$stmt->close();
