@@ -9,10 +9,13 @@
   $category = "";
   $description = "";
   $source = "";
+  $SingleNews = false;
+  $strCount = "";
 
   if($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'save_news.inc.php';
   }
+  require_once 'delete_news.inc.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +24,24 @@
 	<meta charset="utf-8" />
 </head>
 <body>
-  <h1>Последние новости</h1>
+  <p style="font-size:2em; font-weight:bold">Последние новости</p>
+
+  <?
+  require 'get_news.inc.php';
+?>
+  <?foreach ($posts as $post): ?>
+  <?if($SingleNews == true):?>
+  <p><a href="news.php">На главную</a> / <a href="news.php?id_del=<?=$post['id']?>">Удалить</a></p>
+  <?endif?>
+
+    <h2><a href="news.php?id=<?=$post['id']?>"><?=$post['title']?></a></h2>
+    <b><?=$post['category']?></b><br>
+    <small style="text-align:right; display:block"><?=date('d-m-Y' ,$post['datetime'])?></small>
+    <p><?=$post['description']?>...</p>
+    <small>Источник: <?=$post['source']?></small>
+
+  <?endforeach?>
+  <p style="font-size:2em; font-weight:bold">Добавить новость</p>
   <?php
   if (!empty($errMsg)) {
     echo "<p style='color:red'>$errMsg</p>";
@@ -45,8 +65,6 @@
     <br />
     <input type="submit" value="Добавить!" />
 </form>
-<?php
-  require 'get_news.inc.php';
-?>
+
 </body>
 </html>

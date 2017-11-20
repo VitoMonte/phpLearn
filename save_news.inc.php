@@ -23,7 +23,7 @@ if(empty($title) or empty($description)) {
 	if(!$news->saveNews($title, $category, $description, $source)) {
 		$errMsg = "Произошла ошибка при добавлении новости";		
 	} else {
-		header('Location: '.$_SERVER['REQUEST_URI']);
+		header('Location: news.php');
 		exit;
 	}
 }
