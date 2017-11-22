@@ -4,7 +4,7 @@ require_once 'INewsDB.class.php';
 class NewsDB implements INewsDB {
 
 	const DB_NAME = '../news.db'; // в корень сайта
-	const RSS_NAME = '../rss.xml'; // в корень сайта
+	const RSS_NAME = 'rss.xml'; // в корень сайта
 	const RSS_TITLE = 'Последние новости'; // в корень сайта
 	const RSS_LINK = 'http://learn.loc/news/news.php'; // в корень сайта
 	private $_db = null;
@@ -156,13 +156,12 @@ class NewsDB implements INewsDB {
 	public function createRss()
 	{
 		$dom = new DOMDocument("1.0", "utf-8");
-
 		$dom->formatOutput = true; //Форматирует вывод, добавляя отступы и дополнительные пробелы
 		$dom->preserveWhiteSpace = false;//Указание не убирать лишние пробелы и отступы
-
 		
 		$rss = $dom->createElement('rss');//создаем корневой документ
 		$dom->appendChild($rss);//привязали к документу
+
 		$version = $dom->createAttribute("version");
 		$version->value = '2.0';
 		$rss->appendChild($version);
@@ -171,21 +170,21 @@ class NewsDB implements INewsDB {
 		$rss->appendChild($channel);
 
 		$title = $dom->createElement('title', self::RSS_TITLE);
-		$link = $dom->createElement('link', self::RSS_LINK);
-
+		$link = $dom->createElement('link', self::RSS_LINK);		
 		$channel->appendChild($title);
 		$channel->appendChild($link);
+		
 
 		$posts = $this->getNews();
 		foreach ($posts as $post) {
-			$item = $dom->createElement('item');
 
+			$item = $dom->createElement('item');
 			$title = $dom->createElement('title', $post['title']);
 			$link = $dom->createElement('link', self::RSS_LINK . "?id=" . $post['id']);
 			$description = $dom->createElement('description');
 			$cdata = $dom->createCDATASection($post['description']);
 			$description->appendChild($cdata);
-			$pubDate = $dom->createElement('pubDate', date('d-m-Y' ,$post['datetime']));
+			$pubDate = $dom->createElement('pubDate', date('r' ,$post['datetime']));
 			$category = $dom->createElement('category', $post['category']);
 
 			$item->appendChild($title);
@@ -196,6 +195,6 @@ class NewsDB implements INewsDB {
 
 			$channel->appendChild($item);
 		}
-		$dom->save('../rss.xml');
+		$dom->save(self::RSS_NAME);
 	}
 }

@@ -1,0 +1,39 @@
+#sendform fieldset{
+ 	border: none;
+}
+
+#sendform p{
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+#sendform label{
+	float: left;
+	width: 150px;
+}
+
+#sendform input[type="text"],
+#sendform input[type="tel"],
+#sendform input[type="email"],
+#sendform textarea
+{
+ 	border: 1px solid #ccc;
+ 	height: 22px;
+ 	padding-left: 5px;
+ 	padding-right: 5px;
+ 	float: left;
+ 	width: 250px;
+ }
+
+
+#sendform textarea{
+	height: 100px;
+}
+
+#sendform input.error{
+	border: 1px solid red
+}
+
+#sendform label.error{
+	display: none !important;
+}
